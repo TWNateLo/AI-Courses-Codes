@@ -1,0 +1,39 @@
+Git Note:
+
+## remember to install the git graph plugin for VScode!!
+
+# Clone a project from remote
+git clone [URL]
+
+# Add changes to track
+git add [filename]
+git add * --> add all changes to track
+
+# Remove changes from track
+git remove
+
+# Check status of the track
+git status
+
+# commit the changes on track
+git commit
+
+# Push the commit to the remote repo
+git push
+
+# branch creation --> better do it in the remote env
+
+# check remote/local branch(es)
+git branch -a 
+
+# changing branch
+git checkout [branch name]
+
+# fetch (update the current working directory)
+git fetch
+
+# pull from the remote branch
+git pull
+
+
+
