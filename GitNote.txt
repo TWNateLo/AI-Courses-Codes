@@ -10,13 +10,13 @@ git add [filename]
 git add * --> add all changes to track
 
 # Remove changes from track
-git remove
+git rm or reset??? research pending
 
 # Check status of the track
 git status
 
 # commit the changes on track
-git commit
+git commit -m "[message]"
 
 # Push the commit to the remote repo
 git push
