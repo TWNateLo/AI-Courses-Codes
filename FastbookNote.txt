@@ -1,0 +1,7 @@
+
+Installing on windows env:
+https://forums.fast.ai/t/installation-of-fastai-v2-on-windows/84231/5
+
+FastAI on windows
+https://forums.fast.ai/t/how-to-properly-install-fastai-on-a-windows-11-machine-wsl-a-2023-guide/104625/5
+
