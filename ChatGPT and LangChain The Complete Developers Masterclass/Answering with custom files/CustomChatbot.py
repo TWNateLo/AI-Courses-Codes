@@ -12,4 +12,6 @@ docs = loader.load_and_split(
     text_splitter=text_splitter
 )
 
-print(docs)
+for doc in docs:
+    print(doc.page_content)
+    print('\n')
