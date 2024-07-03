@@ -1,5 +1,14 @@
 from langchain.document_loaders import TextLoader
+from langchain.embeddings import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
+from langchain.vectorstores.chroma import Chroma
+
+
+embeddings = OpenAIEmbeddings()
+
+emb = embeddings.embed_query("Hi there")
+
+print(emb)
 
 text_splitter = CharacterTextSplitter(
     separator = '\n',
