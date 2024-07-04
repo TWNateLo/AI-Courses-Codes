@@ -1,8 +1,8 @@
-from langchain.embeddings import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain.vectorstores.chroma import Chroma
 from langchain.chains import RetrievalQA
 #from langchain.chat_models import ChatOpenAI
-from langchain_community.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 
 chat = ChatOpenAI()
 
@@ -24,4 +24,12 @@ chain = RetrievalQA.from_chain_type(
     chain_type="stuff"
 )
 
+"""
 result = chain.run("What is an interesting fact about the English language?")
+print(result)
+"""
+
+#https://github.com/langchain-ai/langchain/discussions/21206
+result = chain.invoke("What is an interesting fact about the English language?")
+content = result['result']
+print(content)
