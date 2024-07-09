@@ -1,5 +1,8 @@
 from langchain_openai import OpenAIEmbeddings
-from langchain.vectorstores.chroma import Chroma
+#The following is deprecated
+#from langchain.vectorstores.chroma import Chroma
+#This is the correct way to call Chroma now
+from langchain_community.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 #from langchain.chat_models import ChatOpenAI
 from langchain_openai import ChatOpenAI
@@ -7,9 +10,6 @@ from langchain_openai import ChatOpenAI
 chat = ChatOpenAI()
 
 embeddings = OpenAIEmbeddings()
-#Only need to run for one time at first
-#emb = embeddings.embed_query("Hi there")
-#print(emb)
 
 db = Chroma(
     persist_directory="emb",
