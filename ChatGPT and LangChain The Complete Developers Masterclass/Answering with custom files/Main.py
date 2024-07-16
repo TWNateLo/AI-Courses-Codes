@@ -29,7 +29,7 @@ db = Chroma.from_documents(
 
 results = db.similarity_search(
     "What is the interesting fact about the English language?",
-    k = 1 #(List the top 2 results)
+    #k = 1 #(List the top 2 results)
 )
 
 for result in results:
