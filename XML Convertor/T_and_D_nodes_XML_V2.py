@@ -64,35 +64,32 @@ def modify_tiaowen_content(root, parent_tag):
 # Edit the 前言 part into tagged form
 def modify_preface_content(root, parent_tag):
     """
-    Modify the content of <前言> to custom tagged form.
+    Modify the content of <前言> to remove newline characters and add custom text using the <法規名稱> node.
     """
     for parent in root.findall(parent_tag):
         law_name = parent.find('法規名稱').text if parent.find('法規名稱') is not None else ''
-        bianzhangjie = parent.find('法規內容/編章節').text if parent.find('法規內容/編章節') is not None else ''
+        
+        qianyan = parent.find('前言')
+        if qianyan is not None and qianyan.text:
+            qianyan_text = qianyan.text.replace('\n', '')
+            custom_qianyan_text = f'"{law_name}"前言:{qianyan_text}'
+            qianyan.text = custom_qianyan_text
 
-        # Remove all spaces from <編章節> contents
-        bianzhangjie_cleaned = bianzhangjie.replace(" ", "")
 
-        for tiaowen in parent.findall('.//條文'):
-            tiaohou = tiaowen.find('條號').text if tiaowen.find('條號') is not None else ''
-            # Remove all spaces from <編章節> contents
-            tiaohou_cleaned = tiaohou.replace(" ", "")
-            tiaowen_neirong = tiaowen.find('條文內容').text if tiaowen.find('條文內容') is not None else ''
-            
-            custom_text = f'依照"{law_name}"{bianzhangjie_cleaned}{tiaohou_cleaned}之規定，{tiaowen_neirong}'
-            
-            # Overwrite the content of <條文> with custom text
-            tiaowen.text = custom_text
-            
-            # Remove child nodes <條號> and <條文內容>
-            for child in list(tiaowen):
-                if child.tag in ['條號', '條文內容']:
-                    tiaowen.remove(child)
-
-        # Remove the <編章節> node
-        for bianzhangjie_node in parent.findall('法規內容/編章節'):
-            parent.find('法規內容').remove(bianzhangjie_node)
-
+# Edit the 沿革 part into tagged form
+def modify_Changelog_content(root, parent_tag):
+    """
+    Modify the content of <前言> to remove newline characters and add custom text using the <法規名稱> node.
+    """
+    for parent in root.findall(parent_tag):
+        law_name = parent.find('法規名稱').text if parent.find('法規名稱') is not None else ''
+        
+        Changelog = parent.find('沿革內容')
+        if Changelog is not None and Changelog.text:
+            # If the .txet.replace()
+            Changelog_text = Changelog.text.replace(' ', '').replace('\n', '，')
+            custom_Changelog_text = f'"{law_name}"沿革內容:{Changelog_text}'
+            Changelog.text = custom_Changelog_text
 
 
 
@@ -112,6 +109,12 @@ def parse_and_process_xml(input_xml_file_path, output_xml_file_path, parent_tag,
     # Modify <條文> content
     modify_tiaowen_content(root, parent_tag)
 
+    # Modify <前言> content
+    modify_preface_content(root, parent_tag)
+
+    # Modify <沿革> content
+    modify_Changelog_content(root, parent_tag)
+
     # Write the result to a new XML file
     tree.write(output_xml_file_path, encoding='utf-8', xml_declaration=True)
 
@@ -125,7 +128,7 @@ output_xml_file_path = 'FalV_modded_V2.xml'
 parent_tag = '法規'
 child_tag = '廢止註記'
 value = '廢'
-excluded_tags = {"廢止註記", "最新異動日期", "是否英譯註記", "生效日期", "法規類別", "法規性質", "生效內容"}
+excluded_tags = {"廢止註記", "最新異動日期", "是否英譯註記", "生效日期", "法規類別", "法規性質", "生效內容", "附件"}
 
 # Parse and process the XML file
 parse_and_process_xml(input_xml_file_path, output_xml_file_path, parent_tag, child_tag, value, excluded_tags)
