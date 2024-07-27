@@ -55,6 +55,46 @@ def modify_tiaowen_content(root, parent_tag):
                 if child.tag in ['條號', '條文內容']:
                     tiaowen.remove(child)
 
+        # Remove the <編章節> node
+        for bianzhangjie_node in parent.findall('法規內容/編章節'):
+            parent.find('法規內容').remove(bianzhangjie_node)
+
+
+
+# Edit the 前言 part into tagged form
+def modify_preface_content(root, parent_tag):
+    """
+    Modify the content of <前言> to custom tagged form.
+    """
+    for parent in root.findall(parent_tag):
+        law_name = parent.find('法規名稱').text if parent.find('法規名稱') is not None else ''
+        bianzhangjie = parent.find('法規內容/編章節').text if parent.find('法規內容/編章節') is not None else ''
+
+        # Remove all spaces from <編章節> contents
+        bianzhangjie_cleaned = bianzhangjie.replace(" ", "")
+
+        for tiaowen in parent.findall('.//條文'):
+            tiaohou = tiaowen.find('條號').text if tiaowen.find('條號') is not None else ''
+            # Remove all spaces from <編章節> contents
+            tiaohou_cleaned = tiaohou.replace(" ", "")
+            tiaowen_neirong = tiaowen.find('條文內容').text if tiaowen.find('條文內容') is not None else ''
+            
+            custom_text = f'依照"{law_name}"{bianzhangjie_cleaned}{tiaohou_cleaned}之規定，{tiaowen_neirong}'
+            
+            # Overwrite the content of <條文> with custom text
+            tiaowen.text = custom_text
+            
+            # Remove child nodes <條號> and <條文內容>
+            for child in list(tiaowen):
+                if child.tag in ['條號', '條文內容']:
+                    tiaowen.remove(child)
+
+        # Remove the <編章節> node
+        for bianzhangjie_node in parent.findall('法規內容/編章節'):
+            parent.find('法規內容').remove(bianzhangjie_node)
+
+
+
 
 def parse_and_process_xml(input_xml_file_path, output_xml_file_path, parent_tag, child_tag, value, excluded_tags):
     """
@@ -79,7 +119,7 @@ def parse_and_process_xml(input_xml_file_path, output_xml_file_path, parent_tag,
 input_xml_file_path = 'FalV.xml'
 
 # Path to the output XML file
-output_xml_file_path = 'FalV_modded.xml'
+output_xml_file_path = 'FalV_modded_V2.xml'
 
 # Tags and value to use for removal
 parent_tag = '法規'
