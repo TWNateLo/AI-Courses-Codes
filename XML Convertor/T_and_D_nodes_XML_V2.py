@@ -45,6 +45,9 @@ def modify_tiaowen_content(root, parent_tag):
             tiaohou_cleaned = tiaohou.replace(" ", "")
             tiaowen_neirong = tiaowen.find('條文內容').text if tiaowen.find('條文內容') is not None else ''
             
+            # Remove all \n from <條文內容> contents
+            tiaowen_neirong = tiaowen_neirong.replace("\n", " ")
+
             custom_text = f'依照"{law_name}"{bianzhangjie_cleaned}{tiaohou_cleaned}之規定，{tiaowen_neirong}'
             
             # Overwrite the content of <條文> with custom text
