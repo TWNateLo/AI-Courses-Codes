@@ -92,7 +92,46 @@ def modify_Changelog_content(root, parent_tag):
             Changelog.text = custom_Changelog_text
 
 
+# Edit the "法規基本資料" part into tagged form
+def merge_law_info(root, parent_tag):
+    """
+    Merge the nodes <法規名稱>, <英文法規名稱>, and <法規網址> into a custom node <法規基本資料>
+    """
+    for parent in root.findall(parent_tag):
+        law_name = parent.find('法規名稱').text if parent.find('法規名稱') is not None else ''
+        english_name = parent.find('英文法規名稱').text if parent.find('英文法規名稱') is not None else ''
+        law_url = parent.find('法規網址').text if parent.find('法規網址') is not None else ''
+        
+        
+        # Detecting what english_name is if "英文法規名稱" is None
+        #if english_name == '\n    ':
+        #    print("Correcto biach")
 
+        # Original code without empty english name ifelse filter
+        #custom_info_text = f'"{law_name}"法規基本資料: 法規網址: {law_url}， 英文名稱: {english_name}'
+
+        # Add a filter to not show the empty english name field if it is not available
+        custom_info_text = f'"{law_name}"法規基本資料: 法規網址: {law_url}， 英文名稱: {english_name}' if english_name != '\n    ' else f'"{law_name}"法規基本資料: 法規網址: {law_url}'
+
+        law_basic_info = ET.Element('法規基本資料')
+        law_basic_info.text = custom_info_text
+        
+        # Insert the new node <法規基本資料> as the first child
+        parent.insert(0, law_basic_info)
+        #parent.append(law_basic_info)
+
+        # Ensure the <沿革內容> node is on a new line
+        if len(parent) > 1:
+            parent[0].tail = "\n    " + (parent[0].tail or '')
+        
+        # Remove the old nodes
+        for tag in ['法規名稱', '英文法規名稱', '法規網址']:
+            old_node = parent.find(tag)
+            if old_node is not None:
+                parent.remove(old_node)
+
+
+# Main function
 def parse_and_process_xml(input_xml_file_path, output_xml_file_path, parent_tag, child_tag, value, excluded_tags):
     """
     Parse the XML file, process it to remove specific nodes and child nodes, and write to a new XML file.
@@ -114,6 +153,9 @@ def parse_and_process_xml(input_xml_file_path, output_xml_file_path, parent_tag,
 
     # Modify <沿革> content
     modify_Changelog_content(root, parent_tag)
+
+    # Merge law information (with child nodes removal also)
+    merge_law_info(root, parent_tag)
 
     # Write the result to a new XML file
     tree.write(output_xml_file_path, encoding='utf-8', xml_declaration=True)
