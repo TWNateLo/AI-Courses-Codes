@@ -14,7 +14,7 @@ from selenium.webdriver.common.keys import Keys
 def first_query_page():
     #Access the main search page of the law precedent system
     driver = webdriver.Chrome(executable_path=os.path.abspath(path))
-    url = "https://law.judicial.gov.tw/FJUD/default_AD.aspx"
+    url = "https://judgment.judicial.gov.tw/FJUD/Default_AD.aspx"
     driver.get(url)
 
     #Find the elements and simulate the clicks
