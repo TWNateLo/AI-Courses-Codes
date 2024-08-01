@@ -1,14 +1,27 @@
+import time
+import configparser
+import logging
 import os
 import re
+import sys
 import time
+from datetime import date
+
+import pandas as pd
+import urllib3
+import xlsxwriter
 
 import requests
 from bs4 import BeautifulSoup, Comment
 from requests.exceptions import ConnectionError
 from selenium import webdriver
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def first_query_page():
@@ -40,16 +53,47 @@ def first_query_page():
     content.send_keys(7)
     content = driver.find_element("name", "dd2")
     content.send_keys(31)
+    #Select the court
+    driver.find_element(By.XPATH, "//*[@id='jud_court']/option[22]").click()
+    #Click the search button
     driver.find_element("name", "ctl00$cp_content$btnQry").click()
+
+
+
+    # Fetch all the URLs of the query result
+    # Should use a for loop to automate saving all the URLs for the individual data page
+
+    # Bs4 the current source instead of the URL
+    # Extract the page source
+    # Wait for the page to load
+    #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'hlTitle')))
+    page_source = driver.page_source
+    # Close the browser
+    # Parse the page source with BeautifulSoup
+    source_soup = BeautifulSoup(page_source, 'html.parser')
+    page_content = source_soup
+    print(page_content)
+
+    print(page_content.find_all("a", id="hlTitle"))
+
+    #article_URLs = [
+    #    f'https://judgment.judicial.gov.tw/FJUD/{node.get("href")}'
+    #    for node in page_content.find_all("a", id="hlTitle")
+    #]
+    #print(article_URLs)
+    #print(len(article_URLs))
+    #print(type(article_URLs))
+
 
     # retrieve page of query result
     handles = driver.window_handles
     driver.switch_to.window(handles[-1])
-    time.sleep(0.5)
+    time.sleep(5)
 
     # switch to the page
     page_url = driver.current_url
     return page_url
+
 
 
 def get_bs4_content(url):
@@ -73,4 +117,16 @@ def get_full_text(content):
     return full_text
 
 
-content = get_bs4_content(url=first_query_page())
+#Some temp callers for testing out the selenium code
+#content = get_bs4_content(url=first_query_page())
+#print(first_query_page())
+
+
+
+#Main function
+
+first_query_page()
+
+
+## https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&id=TPDM%2c113%2c%e8%81%b2%2c1706%2c20240730%2c1&ot=in
+## https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&id=TPDM%2c113%2c%e8%81%b2%2c1706%2c20240730%2c1&ot=in
