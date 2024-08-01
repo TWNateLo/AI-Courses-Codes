@@ -67,6 +67,7 @@ def first_query_page():
     # Extract the page source
     # Wait for the page to load
     #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'hlTitle')))
+    time.sleep(5)
     page_source = driver.page_source
     # Close the browser
     # Parse the page source with BeautifulSoup
