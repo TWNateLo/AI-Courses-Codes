@@ -17,7 +17,7 @@ def first_query_page():
     #In the latest version of Selenium, webdriver is no longer needed to be downloaded
     #https://stackoverflow.com/questions/76550506/typeerror-webdriver-init-got-an-unexpected-keyword-argument-executable-p
     driver = webdriver.Chrome()
-    url = "https://judgment.judicial.gov.tw/FJUD/Default_AD.aspx
+    url = "https://judgment.judicial.gov.tw/FJUD/Default_AD.aspx"
     driver.get(url)
 
     #Find the elements and simulate the clicks
