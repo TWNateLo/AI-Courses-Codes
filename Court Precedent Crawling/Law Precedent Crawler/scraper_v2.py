@@ -21,6 +21,15 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+# Add custom user-agent to prevent blocking
+#from selenium.webdriver.chrome.options import Options
+#from fake_useragent import UserAgent
+
+#ua = UserAgent()
+#chrome_options = webdriver.ChromeOptions()
+#chrome_options.add_argument(f'--user-agent={ua.random}')
+
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
@@ -29,6 +38,7 @@ def first_query_page():
     #driver download: https://googlechromelabs.github.io/chrome-for-testing/
     #In the latest version of Selenium, webdriver is no longer needed to be downloaded
     #https://stackoverflow.com/questions/76550506/typeerror-webdriver-init-got-an-unexpected-keyword-argument-executable-p
+    #driver = webdriver.Chrome(options=chrome_options)
     driver = webdriver.Chrome()
     url = "https://judgment.judicial.gov.tw/FJUD/Default_AD.aspx"
     driver.get(url)
@@ -63,26 +73,34 @@ def first_query_page():
     # Fetch all the URLs of the query result
     # Should use a for loop to automate saving all the URLs for the individual data page
 
-    # Bs4 the current source instead of the URL
-    # Extract the page source
+    #Switch frame (Very important for dynamic load with iframes or others)
+    #https://ithelp.ithome.com.tw/articles/10269242
+    #https://selenium-python.readthedocs.io/api.html
+    driver.switch_to.frame("iframe-data")
+    
+    
     # Wait for the page to load
     #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'hlTitle')))
-    time.sleep(5)
+    #WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, 'hlTitle')))
+    time.sleep(3)
+
+    # Extract the page source
     page_source = driver.page_source
-    # Close the browser
+    #page_source = driver.execute_script("return document.getElementsByTagName('html')[0].innerHTML")
+
     # Parse the page source with BeautifulSoup
     source_soup = BeautifulSoup(page_source, 'html.parser')
     page_content = source_soup
     print(page_content)
 
-    print(page_content.find_all("a", id="hlTitle"))
+    #print(page_content.find_all("a", id="hlTitle"))
 
-    #article_URLs = [
-    #    f'https://judgment.judicial.gov.tw/FJUD/{node.get("href")}'
-    #    for node in page_content.find_all("a", id="hlTitle")
-    #]
-    #print(article_URLs)
-    #print(len(article_URLs))
+    article_URLs = [
+        f'https://judgment.judicial.gov.tw/FJUD/{node.get("href")}'
+        for node in page_content.find_all("a", id="hlTitle")
+    ]
+    print(article_URLs)
+    print(len(article_URLs))
     #print(type(article_URLs))
 
 
