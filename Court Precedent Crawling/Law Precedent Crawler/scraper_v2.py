@@ -62,7 +62,7 @@ def first_query_page():
     content = driver.find_element("name", "dm2")
     content.send_keys(7)
     content = driver.find_element("name", "dd2")
-    content.send_keys(31)
+    content.send_keys(30)
     #Select the court
     driver.find_element(By.XPATH, "//*[@id='jud_court']/option[22]").click()
     #Click the search button
@@ -93,12 +93,15 @@ def first_query_page():
     page_content = source_soup
     print(page_content)
 
-    #print(page_content.find_all("a", id="hlTitle"))
+    #Conditioned article URL fetch (Some URL are None)
+    article_URLs = []
+    for node in page_content.find_all("a", id="hlTitle"):
+        if node.get("href") is not None:
+            article_URLs.append(f'https://judgment.judicial.gov.tw/FJUD/{node.get("href")}')
+        else:
+            pass
+    
 
-    article_URLs = [
-        f'https://judgment.judicial.gov.tw/FJUD/{node.get("href")}'
-        for node in page_content.find_all("a", id="hlTitle")
-    ]
     print(article_URLs)
     print(len(article_URLs))
     #print(type(article_URLs))
