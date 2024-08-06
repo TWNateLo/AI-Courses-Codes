@@ -82,7 +82,7 @@ def first_query_page():
     # Wait for the page to load
     #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'hlTitle')))
     #WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, 'hlTitle')))
-    time.sleep(3)
+    time.sleep(1)
 
     # Extract the page source
     page_source = driver.page_source
@@ -101,53 +101,40 @@ def first_query_page():
         else:
             pass
     
-
+    ## print test
     print(article_URLs)
     print(len(article_URLs))
-    #print(type(article_URLs))
+
+    return article_URLs
 
 
-    # retrieve page of query result
-    handles = driver.window_handles
-    driver.switch_to.window(handles[-1])
-    time.sleep(5)
+# Crawling the individual page
+def crawl_individual_page(content):
+    jud_div=content.find('div', class_='int-table col-xs-8', id='jud')
+    jud_div_text = jud_div.get_text(separator='', strip=True)
+    # raw-stripped strings method:
+    # jud_div_text = [text for text in jud_div.stripped_strings]
 
-    # switch to the page
-    page_url = driver.current_url
-    return page_url
+    #Remove dirty spaces
+    jud_div_text=jud_div_text.replace(' ', '').replace(' ', '')
+    print(jud_div_text)
 
 
 
+# Making soup
 def get_bs4_content(url):
     res = requests.get(url, verify=False)
     soup = BeautifulSoup(res.text, "html.parser")
     return soup
 
 
-def get_main_text(content):
-    raw_text = content.find("body").find(
-        "div", {"class": "text-pre text-pre-in"})
-    sentences = raw_text.find_all(
-        text=lambda text: isinstance(text, Comment))
-    main_text = ",".join(sentences)
-    return main_text
-
-
-def get_full_text(content):
-    nodes = content.find("body").find_all("td")
-    full_text = ",".join([node.text for node in nodes])
-    return full_text
-
-
-#Some temp callers for testing out the selenium code
-#content = get_bs4_content(url=first_query_page())
-#print(first_query_page())
-
-
 
 #Main function
 
-first_query_page()
+#Calling the single page crawler
+#crawl_individual_page(get_bs4_content(first_query_page()[0]))
+
+
 
 
 ## https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&id=TPDM%2c113%2c%e8%81%b2%2c1706%2c20240730%2c1&ot=in
