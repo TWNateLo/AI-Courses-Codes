@@ -50,26 +50,31 @@ def first_query_page():
     #https://stackoverflow.com/questions/72773206/selenium-python-attributeerror-webdriver-object-has-no-attribute-find-el
     driver.find_element(By.XPATH, "//*[@id='vtype_M']/input").click()
     #Date range start
-    content = driver.find_element("name", "dy1")
-    content.send_keys(113)
-    content = driver.find_element("name", "dm1")
-    content.send_keys(7)
-    content = driver.find_element("name", "dd1")
-    content.send_keys(16)
+    year_field1 = driver.find_element("name", "dy1")
+    year_field1.send_keys(113)
+    month_field1 = driver.find_element("name", "dm1")
+    month_field1.send_keys(7)
+    day_field1 = driver.find_element("name", "dd1")
+    day_field1.send_keys(16)
     #Date range end
-    content = driver.find_element("name", "dy2")
-    content.send_keys(113)
-    content = driver.find_element("name", "dm2")
-    content.send_keys(7)
-    content = driver.find_element("name", "dd2")
-    content.send_keys(30)
+    year_field2 = driver.find_element("name", "dy2")
+    year_field2.send_keys(113)
+    month_field2 = driver.find_element("name", "dm2")
+    month_field2.send_keys(7)
+    day_field2 = driver.find_element("name", "dd2")
+    day_field2.send_keys(30)
     #Select the court
     driver.find_element(By.XPATH, "//*[@id='jud_court']/option[22]").click()
     #Click the search button
     driver.find_element("name", "ctl00$cp_content$btnQry").click()
 
 
-
+    # Continue with this part for the next page loop (in total max 25 pages per search session)
+    for i in range(24):
+        if i == 0:
+            pass
+        else:
+            driver.find_element("name", "dd2").click()
     # Fetch all the URLs of the query result
     # Should use a for loop to automate saving all the URLs for the individual data page
 
@@ -104,7 +109,6 @@ def first_query_page():
     ## print test
     print(article_URLs)
     print(len(article_URLs))
-
     return article_URLs
 
 
@@ -133,6 +137,7 @@ def get_bs4_content(url):
 
 #Calling the single page crawler
 #crawl_individual_page(get_bs4_content(first_query_page()[0]))
+
 
 
 
