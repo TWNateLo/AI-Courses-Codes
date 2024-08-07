@@ -69,53 +69,57 @@ def first_query_page():
     driver.find_element("name", "ctl00$cp_content$btnQry").click()
 
 
-    #For testing when to locate the iframe(once only or every time)
-    #driver.switch_to.frame("iframe-data")
+    #Frame switch will still work after page switching, no need to be in the for loop
+    driver.switch_to.frame("iframe-data")
 
+    
+    # Definte the article_URLs variable here to avoid being reset in loop...
+    article_URLs = []
     # Continue with this part for the next page loop (in total max 25 pages per search session)
-    '''
     for i in range(24):
         if i == 0:
             pass
         else:
             driver.find_element("id", "hlNext").click()
-    '''
 
-    # Fetch all the URLs of the query result
-    # Should use a for loop to automate saving all the URLs for the individual data page
 
-    #Switch frame (Very important for dynamic load with iframes or others)
-    #https://ithelp.ithome.com.tw/articles/10269242
-    #https://selenium-python.readthedocs.io/api.html
-    driver.switch_to.frame("iframe-data")
+        # Fetch all the URLs of the query result
+        # Should use a for loop to automate saving all the URLs for the individual data page
+
+        #Switch frame (Very important for dynamic load with iframes or others)
+        #https://ithelp.ithome.com.tw/articles/10269242
+        #https://selenium-python.readthedocs.io/api.html
+        #driver.switch_to.frame("iframe-data")
+        
+        
+        # Wait for the page to load
+        #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'hlTitle')))
+        #WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, 'hlTitle')))
+        time.sleep(1)
+
+        # Extract the page source
+        page_source = driver.page_source
+        #page_source = driver.execute_script("return document.getElementsByTagName('html')[0].innerHTML")
+
+        # Parse the page source with BeautifulSoup
+        source_soup = BeautifulSoup(page_source, 'html.parser')
+        page_content = source_soup
+        #Print test
+        #print(page_content)
+
+        #Conditioned article URL fetch (Some URL are None)
+        for node in page_content.find_all("a", id="hlTitle"):
+            if node.get("href") is not None:
+                article_URLs.append(f'https://judgment.judicial.gov.tw/FJUD/{node.get("href")}')
+            else:
+                pass
+        
+        ## print test
+        #print(article_URLs)
+        #print(len(article_URLs))
     
-    
-    # Wait for the page to load
-    #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'hlTitle')))
-    #WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, 'hlTitle')))
-    time.sleep(1)
-
-    # Extract the page source
-    page_source = driver.page_source
-    #page_source = driver.execute_script("return document.getElementsByTagName('html')[0].innerHTML")
-
-    # Parse the page source with BeautifulSoup
-    source_soup = BeautifulSoup(page_source, 'html.parser')
-    page_content = source_soup
-    print(page_content)
-
-    #Conditioned article URL fetch (Some URL are None)
-    article_URLs = []
-    for node in page_content.find_all("a", id="hlTitle"):
-        if node.get("href") is not None:
-            article_URLs.append(f'https://judgment.judicial.gov.tw/FJUD/{node.get("href")}')
-        else:
-            pass
-    
-    ## print test
+    # Print test
     print(article_URLs)
-    print(len(article_URLs))
-
     return article_URLs
 
 
@@ -144,19 +148,24 @@ def get_bs4_content(url):
 #Main function
 
 #Calling the single page crawler
-crawl_individual_page(get_bs4_content(first_query_page()[0]))
+#crawl_individual_page(get_bs4_content(first_query_page()[0]))
 
 
-'''
 
 # Save the first query article URLs result
 Article_URLs = first_query_page()
+print(Article_URLs[0])
+print("Article_URLs transfer finished")
+
 # Initiate the bs4 raw contents container array
 bs4_raw_contents = []
-
 # Populating the bs4_raw_contents array
 for i in range(len(Article_URLs)):
     bs4_raw_contents.append(get_bs4_content(Article_URLs[i]))
+    print("I am running!\nProgress:" + str(i) +"/" + str(len(Article_URLs)))
+
+print(bs4_raw_contents[0])
+print("bs4_raw_contents populate finished")
 
 
 # Crawl all the contents
@@ -165,7 +174,10 @@ crawled_text = []
 for i in range(len(bs4_raw_contents)):
     crawled_text.append(crawl_individual_page(bs4_raw_contents[i]))
 
-'''
+for i in range(len(bs4_raw_contents)):
+    print(crawled_text[i])
+    print("\n")
+
 
 
 
