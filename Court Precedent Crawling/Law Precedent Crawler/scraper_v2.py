@@ -34,6 +34,9 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def first_query_page():
+    #Add a CLI to input the date range of the crawler
+
+
     #Access the main search page of the law precedent system
     #driver download: https://googlechromelabs.github.io/chrome-for-testing/
     #In the latest version of Selenium, webdriver is no longer needed to be downloaded
