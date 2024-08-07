@@ -70,11 +70,15 @@ def first_query_page():
 
 
     # Continue with this part for the next page loop (in total max 25 pages per search session)
+
+    '''
     for i in range(24):
         if i == 0:
             pass
         else:
-            driver.find_element("name", "dd2").click()
+            driver.find_element("id", "hlNext").click()
+    '''
+
     # Fetch all the URLs of the query result
     # Should use a for loop to automate saving all the URLs for the individual data page
 
@@ -109,6 +113,7 @@ def first_query_page():
     ## print test
     print(article_URLs)
     print(len(article_URLs))
+
     return article_URLs
 
 
@@ -122,6 +127,7 @@ def crawl_individual_page(content):
     #Remove dirty spaces
     jud_div_text=jud_div_text.replace(' ', '').replace(' ', '')
     print(jud_div_text)
+    return jud_div_text
 
 
 
@@ -136,8 +142,28 @@ def get_bs4_content(url):
 #Main function
 
 #Calling the single page crawler
-#crawl_individual_page(get_bs4_content(first_query_page()[0]))
+crawl_individual_page(get_bs4_content(first_query_page()[0]))
 
+
+'''
+
+# Save the first query article URLs result
+Article_URLs = first_query_page()
+# Initiate the bs4 raw contents container array
+bs4_raw_contents = []
+
+# Populating the bs4_raw_contents array
+for i in range(len(Article_URLs)):
+    bs4_raw_contents.append(get_bs4_content(Article_URLs[i]))
+
+
+# Crawl all the contents
+# Initiate the final crawled text array
+crawled_text = []
+for i in range(len(bs4_raw_contents)):
+    crawled_text.append(crawl_individual_page(bs4_raw_contents[i]))
+
+'''
 
 
 
