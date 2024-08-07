@@ -115,7 +115,7 @@ def first_query_page():
                 pass
         
         #
-        print()
+        print("Cuurent page: " + str(i+1) + "/" + "25")
         ## print test
         #print(article_URLs)
         #print(len(article_URLs))
