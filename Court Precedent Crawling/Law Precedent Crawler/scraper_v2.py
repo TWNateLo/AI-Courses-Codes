@@ -69,8 +69,10 @@ def first_query_page():
     driver.find_element("name", "ctl00$cp_content$btnQry").click()
 
 
-    # Continue with this part for the next page loop (in total max 25 pages per search session)
+    #For testing when to locate the iframe(once only or every time)
+    #driver.switch_to.frame("iframe-data")
 
+    # Continue with this part for the next page loop (in total max 25 pages per search session)
     '''
     for i in range(24):
         if i == 0:
