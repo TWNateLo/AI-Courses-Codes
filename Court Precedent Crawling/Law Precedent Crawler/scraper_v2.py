@@ -114,6 +114,8 @@ def first_query_page():
             else:
                 pass
         
+        #
+        print()
         ## print test
         #print(article_URLs)
         #print(len(article_URLs))
@@ -131,7 +133,7 @@ def crawl_individual_page(content):
     # jud_div_text = [text for text in jud_div.stripped_strings]
 
     #Remove dirty spaces
-    jud_div_text=jud_div_text.replace(' ', '').replace(' ', '')
+    jud_div_text=jud_div_text.replace(' ', '').replace(' ', '').replace('　', '')
     print(jud_div_text)
     return jud_div_text
 
@@ -157,6 +159,8 @@ Article_URLs = first_query_page()
 print(Article_URLs[0])
 print("Article_URLs transfer finished")
 
+
+'''
 # Initiate the bs4 raw contents container array
 bs4_raw_contents = []
 # Populating the bs4_raw_contents array
@@ -173,8 +177,16 @@ print("bs4_raw_contents populate finished")
 crawled_text = []
 for i in range(len(bs4_raw_contents)):
     crawled_text.append(crawl_individual_page(bs4_raw_contents[i]))
+'''
 
-for i in range(len(bs4_raw_contents)):
+# joint function
+crawled_text = []
+for i in range(len(Article_URLs)):
+    crawled_text.append(crawl_individual_page(get_bs4_content(Article_URLs[i])))
+    print("SoupMaker & Scrapper running!\nProgress:" + str(i) +"/" + str(len(Article_URLs)))
+
+
+for i in range(len(Article_URLs)):
     print(crawled_text[i])
     print("\n")
 
