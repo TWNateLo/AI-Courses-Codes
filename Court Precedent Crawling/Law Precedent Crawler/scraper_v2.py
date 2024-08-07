@@ -160,6 +160,7 @@ print(Article_URLs[0])
 print("Article_URLs transfer finished")
 
 
+# Old functions
 '''
 # Initiate the bs4 raw contents container array
 bs4_raw_contents = []
@@ -167,11 +168,8 @@ bs4_raw_contents = []
 for i in range(len(Article_URLs)):
     bs4_raw_contents.append(get_bs4_content(Article_URLs[i]))
     print("I am running!\nProgress:" + str(i) +"/" + str(len(Article_URLs)))
-
 print(bs4_raw_contents[0])
 print("bs4_raw_contents populate finished")
-
-
 # Crawl all the contents
 # Initiate the final crawled text array
 crawled_text = []
