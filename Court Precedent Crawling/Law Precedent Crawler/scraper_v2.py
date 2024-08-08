@@ -185,7 +185,8 @@ for i in range(len(bs4_raw_contents)):
 # Create a new txt file
 #https://www.w3schools.com/python/python_file_write.asp
 timestamp = datetime.datetime.now()
-f = open("Crawled_text_" + str(timestamp) + ".txt", "a")
+file_name = "Crawled_text_"+str(timestamp)+".txt"
+f = open(file_name, "a")
 
 
 # joint function
