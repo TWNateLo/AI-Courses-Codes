@@ -137,7 +137,7 @@ def crawl_individual_page(content):
 
     #Remove dirty spaces
     jud_div_text=jud_div_text.replace(' ', '').replace(' ', '').replace('　', '')
-    print(jud_div_text)
+    #print(jud_div_text)
     return jud_div_text
 
 
@@ -184,9 +184,9 @@ for i in range(len(bs4_raw_contents)):
 # Writing the crawled_text to txt file
 # Create a new txt file
 #https://www.w3schools.com/python/python_file_write.asp
-timestamp = datetime.datetime.now()
-file_name = "Crawled_text_"+str(timestamp)+".txt"
-f = open(file_name, "a")
+timestamp = str(datetime.datetime.now()).replace(' ','_').replace(':','').replace('.','_')
+file_name = "Crawled_text_"+timestamp+".txt"
+f = open(file_name, "a", encoding="utf-8")
 
 
 # joint function
