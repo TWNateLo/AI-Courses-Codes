@@ -185,23 +185,25 @@ for i in range(len(bs4_raw_contents)):
 # Create a new txt file
 #https://www.w3schools.com/python/python_file_write.asp
 timestamp = datetime.datetime.now()
-f = open("Crawled_text_" + str(timestamp) + ".txt", "x")
+f = open("Crawled_text_" + str(timestamp) + ".txt", "a")
 
 
 # joint function
-crawled_text = []
+# Forget about the array, changing to file output
+#crawled_text = []
 for i in range(len(Article_URLs)):
-    crawled_text.append(crawl_individual_page(get_bs4_content(Article_URLs[i])))
+    #crawled_text.append(crawl_individual_page(get_bs4_content(Article_URLs[i])))
+    f.write(crawl_individual_page(get_bs4_content(Article_URLs[i])) + "\n")
     print("SoupMaker & Scrapper running!\nProgress:" + str(i) +"/" + str(len(Article_URLs)))
 
-
-
+'''
 for i in range(len(Article_URLs)):
     print(crawled_text[i])
     print("\n")
+'''
 
-
-
+# close the output file
+f.close()
 
 
 ## https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&id=TPDM%2c113%2c%e8%81%b2%2c1706%2c20240730%2c1&ot=in
