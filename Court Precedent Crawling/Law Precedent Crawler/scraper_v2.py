@@ -5,7 +5,7 @@ import os
 import re
 import sys
 import time
-from datetime import date
+import datetime
 
 import pandas as pd
 import urllib3
@@ -180,11 +180,20 @@ for i in range(len(bs4_raw_contents)):
     crawled_text.append(crawl_individual_page(bs4_raw_contents[i]))
 '''
 
+
+# Writing the crawled_text to txt file
+# Create a new txt file
+#https://www.w3schools.com/python/python_file_write.asp
+timestamp = datetime.datetime.now()
+f = open("Crawled_text_" + str(timestamp) + ".txt", "x")
+
+
 # joint function
 crawled_text = []
 for i in range(len(Article_URLs)):
     crawled_text.append(crawl_individual_page(get_bs4_content(Article_URLs[i])))
     print("SoupMaker & Scrapper running!\nProgress:" + str(i) +"/" + str(len(Article_URLs)))
+
 
 
 for i in range(len(Article_URLs)):
