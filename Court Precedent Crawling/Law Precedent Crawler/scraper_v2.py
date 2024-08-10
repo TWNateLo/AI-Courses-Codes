@@ -203,7 +203,7 @@ f = open(file_name, "a", encoding="utf-8")
 for i in range(len(Article_URLs)):
     #crawled_text.append(crawl_individual_page(get_bs4_content(Article_URLs[i])))
     f.write(crawl_individual_page(get_bs4_content(Article_URLs[i])) + "\n")
-    print("SoupMaker & Scrapper running!\nProgress:" + str(i) +"/" + str(len(Article_URLs)))
+    print("SoupMaker & Scrapper running!\nProgress:" + str(i+1) +"/" + str(len(Article_URLs)))
 
 '''
 for i in range(len(Article_URLs)):
