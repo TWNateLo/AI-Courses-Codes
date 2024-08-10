@@ -20,6 +20,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 
 # Add custom user-agent to prevent blocking
 #from selenium.webdriver.chrome.options import Options
@@ -31,6 +32,7 @@ from selenium.webdriver.common.keys import Keys
 
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 
 def first_query_page():
@@ -58,14 +60,14 @@ def first_query_page():
     month_field1 = driver.find_element("name", "dm1")
     month_field1.send_keys(7)
     day_field1 = driver.find_element("name", "dd1")
-    day_field1.send_keys(16)
+    day_field1.send_keys(30)
     #Date range end
     year_field2 = driver.find_element("name", "dy2")
     year_field2.send_keys(113)
     month_field2 = driver.find_element("name", "dm2")
     month_field2.send_keys(7)
     day_field2 = driver.find_element("name", "dd2")
-    day_field2.send_keys(30)
+    day_field2.send_keys(31)
     #Select the court
     driver.find_element(By.XPATH, "//*[@id='jud_court']/option[22]").click()
     #Click the search button
@@ -80,10 +82,16 @@ def first_query_page():
     article_URLs = []
     # Continue with this part for the next page loop (in total max 25 pages per search session)
     for i in range(24):
+        
         if i == 0:
+            print("First iteration")
             pass
+        elif len(driver.find_elements("id", "hlNext")) == 0:
+            print('next button not found')
+            break
         else:
             driver.find_element("id", "hlNext").click()
+            print("next page clicked")
 
 
         # Fetch all the URLs of the query result
@@ -159,7 +167,7 @@ def get_bs4_content(url):
 
 # Save the first query article URLs result
 Article_URLs = first_query_page()
-print(Article_URLs[0])
+#print(Article_URLs[0])
 print("Article_URLs transfer finished")
 
 
