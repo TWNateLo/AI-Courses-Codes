@@ -58,16 +58,16 @@ def first_query_page():
     year_field1 = driver.find_element("name", "dy1")
     year_field1.send_keys(113)
     month_field1 = driver.find_element("name", "dm1")
-    month_field1.send_keys(7)
+    month_field1.send_keys(3)
     day_field1 = driver.find_element("name", "dd1")
-    day_field1.send_keys(30)
+    day_field1.send_keys(15)
     #Date range end
     year_field2 = driver.find_element("name", "dy2")
     year_field2.send_keys(113)
     month_field2 = driver.find_element("name", "dm2")
-    month_field2.send_keys(7)
+    month_field2.send_keys(3)
     day_field2 = driver.find_element("name", "dd2")
-    day_field2.send_keys(31)
+    day_field2.send_keys(21)
     #Select the court
     driver.find_element(By.XPATH, "//*[@id='jud_court']/option[22]").click()
     #Click the search button
@@ -82,16 +82,12 @@ def first_query_page():
     article_URLs = []
     # Continue with this part for the next page loop (in total max 25 pages per search session)
     for i in range(24):
-        
         if i == 0:
-            print("First iteration")
             pass
         elif len(driver.find_elements("id", "hlNext")) == 0:
-            print('next button not found')
             break
         else:
             driver.find_element("id", "hlNext").click()
-            print("next page clicked")
 
 
         # Fetch all the URLs of the query result
