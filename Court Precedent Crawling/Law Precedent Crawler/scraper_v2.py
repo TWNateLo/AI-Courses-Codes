@@ -36,7 +36,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def first_query_page():
-    #Add a CLI to input the date range of the crawler
+    #Add a CLI to input the date range of the crawler (also add the date auto detection --> because max query per session is 500)
 
 
     #Access the main search page of the law precedent system
@@ -53,21 +53,25 @@ def first_query_page():
     #Type of precendent
     #find_element function is changed
     #https://stackoverflow.com/questions/72773206/selenium-python-attributeerror-webdriver-object-has-no-attribute-find-el
-    driver.find_element(By.XPATH, "//*[@id='vtype_M']/input").click()
+    
+    #checkbox switch variable for law type (刑事, 民事 or others)
+    #law_type = "//*[@id='vtype_M']/input"
+    law_type = "//*[@id='vtype_V']/input"
+    driver.find_element(By.XPATH, law_type).click()
     #Date range start
     year_field1 = driver.find_element("name", "dy1")
     year_field1.send_keys(113)
     month_field1 = driver.find_element("name", "dm1")
-    month_field1.send_keys(1)
+    month_field1.send_keys(4)
     day_field1 = driver.find_element("name", "dd1")
-    day_field1.send_keys(1)
+    day_field1.send_keys(27)
     #Date range end
     year_field2 = driver.find_element("name", "dy2")
     year_field2.send_keys(113)
     month_field2 = driver.find_element("name", "dm2")
-    month_field2.send_keys(1)
+    month_field2.send_keys(4)
     day_field2 = driver.find_element("name", "dd2")
-    day_field2.send_keys(6)
+    day_field2.send_keys(29)
     #Select the court
     driver.find_element(By.XPATH, "//*[@id='jud_court']/option[22]").click()
     #Click the search button
