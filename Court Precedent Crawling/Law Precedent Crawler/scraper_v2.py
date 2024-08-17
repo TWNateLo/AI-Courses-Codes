@@ -62,16 +62,16 @@ def first_query_page():
     year_field1 = driver.find_element("name", "dy1")
     year_field1.send_keys(113)
     month_field1 = driver.find_element("name", "dm1")
-    month_field1.send_keys(4)
+    month_field1.send_keys(1)
     day_field1 = driver.find_element("name", "dd1")
-    day_field1.send_keys(25)
+    day_field1.send_keys(1)
     #Date range end
     year_field2 = driver.find_element("name", "dy2")
     year_field2.send_keys(113)
     month_field2 = driver.find_element("name", "dm2")
-    month_field2.send_keys(4)
+    month_field2.send_keys(1)
     day_field2 = driver.find_element("name", "dd2")
-    day_field2.send_keys(25)
+    day_field2.send_keys(2)
     #Select the court
     driver.find_element(By.XPATH, "//*[@id='jud_court']/option[22]").click()
     #Click the search button
