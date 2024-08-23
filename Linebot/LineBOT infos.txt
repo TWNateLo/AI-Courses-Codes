@@ -1,0 +1,8 @@
+LineBOT infos
+
+channel access token
+dJELS6J5XD5FiI8+edCm6EoVh6hUYHZX4KFke+O6N6P4W5s9Emnbt0TeUJkjxci0Yxk/zTqGZGRKVZcRYxNC+bQA6hjyctRJdAUICS6HW6N0SgKJCoMGRtK2iYZUsPz4FapeUqIUqycrqAQmHO6QWQdB04t89/1O/w1cDnyilFU=
+
+
+channel secret
+44472f53d0de702751c54bae23143f40
